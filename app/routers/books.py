@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 from .. import crud, schemas, db
 
@@ -11,7 +11,7 @@ def get_db():
     finally:
         database.close()
 
-@router.post("/", response_model=schemas.Book)
+@router.post("/", response_model=schemas.Book, status_code=status.HTTP_201_CREATED)
 def create(book: schemas.BookCreate, database: Session = Depends(get_db)):
     return crud.create_book(database, book)
 
@@ -33,9 +33,11 @@ def update(book_id: int, book: schemas.BookCreate, database: Session = Depends(g
         raise HTTPException(status_code=404, detail="Book not found")
     return updated
 
-@router.delete("/{book_id}")
+
+@router.delete("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(book_id: int, database: Session = Depends(get_db)):
     deleted = crud.delete_book(database, book_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Book not found")
-    return {"ok": True}
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+

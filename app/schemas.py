@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class BookCreate(BaseModel):
@@ -7,8 +7,9 @@ class BookCreate(BaseModel):
     published_year: int = Field(..., gt=0, lt=2100)
     summary: Optional[str] = None
 
+    model_config = ConfigDict(from_attributes=True)
+
 class Book(BookCreate):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
