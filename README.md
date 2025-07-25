@@ -58,7 +58,7 @@ uvicorn app.main:app --reload --port 9010
 docker compose run web pytest
 ```
 #### You should see:
-![Tests Passed](https://raw.githubusercontent.com/syedowaisalishah/book_api/images/TestPassed.png)
+![Test Passed](images/TestPassed.png)
 
 ### 🔗 Project Structure
 ```
